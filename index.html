@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vue.js Search Highlight</title>
+
+    <!--mainPage stylesheet-->
+    <link rel="stylesheet" href="./css/mainPage.css"/>
+
+    <!-- Vue.js framework -->
+    <script src="./js/vue.min.js"></script>
+
+    <!-- component template -->
+    <script type="text/x-template" id="grid-template">
+      <table>
+        <thead>
+          <tr>
+            <th v-for="key in columns"
+              @click="sortBy(key)"
+              :class="{active: sortKey == key}">
+              {{key | capitalize}}
+              <span class="arrow"
+                :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="
+            entry in data
+            | filterBy filterKey
+            | orderBy sortKey sortOrders[sortKey]">
+            <td v-for="key in columns">
+              {{{entry[key] | highlight filterKey}}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </script>
+</head>
+<body>
+
+    <!-- demo root element -->
+    <div id="demo">
+      <form id="search">
+        Search <input name="query" v-model="searchQuery">
+      </form>
+      <demo-grid
+        :data="gridData"
+        :columns="gridColumns"
+        :filter-key="searchQuery">
+      </demo-grid>
+    </div>
+
+    <!-- main.js -->
+    <script src="./js/mainPage.js"></script>
+</body>
+
+
+</html>
